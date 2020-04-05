@@ -177,9 +177,9 @@ namespace IS_2
         {
             SqlDataReader sqlReader = null;
 
-            SqlCommand command = new SqlCommand("SELECT * FROM [Студенты][Группа] WHERE [Id]=@Id ", sqlConnection);
+            SqlCommand command = new SqlCommand("SELECT * FROM [Студенты][Группа] WHERE [Студенты][Название] = [Группа][Id] ", sqlConnection);
 
-            command.Parameters.AddWithValue("Id", textBoxSearch.Text);
+            command.Parameters.AddWithValue("Название", textBoxSearch.Text);
 
             try
             {
