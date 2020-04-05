@@ -179,7 +179,7 @@ namespace IS_2
 
             SqlCommand command = new SqlCommand("SELECT * FROM [Студенты][Группа] WHERE [Id]=@Id ", sqlConnection);
 
-            command.Parameters.AddWithValue("Название", textBoxSearch.Text);
+            command.Parameters.AddWithValue("Id", textBoxSearch.Text);
 
             try
             {
