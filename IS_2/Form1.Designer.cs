@@ -35,8 +35,13 @@
             this.обновитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.textBoxSearch = new System.Windows.Forms.TextBox();
+            this.buttonSearch = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.textBoxGr = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.labelINSERT = new System.Windows.Forms.Label();
             this.buttonINSERT = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
@@ -68,8 +73,6 @@
             this.textBox2DELETE = new System.Windows.Forms.TextBox();
             this.textBox1DELETE = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
-            this.buttonSearch = new System.Windows.Forms.Button();
-            this.textBoxSearch = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -145,6 +148,23 @@
             this.tabPage1.Text = "SELECT";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // textBoxSearch
+            // 
+            this.textBoxSearch.Location = new System.Drawing.Point(3, 155);
+            this.textBoxSearch.Name = "textBoxSearch";
+            this.textBoxSearch.Size = new System.Drawing.Size(355, 20);
+            this.textBoxSearch.TabIndex = 2;
+            // 
+            // buttonSearch
+            // 
+            this.buttonSearch.Location = new System.Drawing.Point(364, 154);
+            this.buttonSearch.Name = "buttonSearch";
+            this.buttonSearch.Size = new System.Drawing.Size(87, 23);
+            this.buttonSearch.TabIndex = 1;
+            this.buttonSearch.Text = "Поиск";
+            this.buttonSearch.UseVisualStyleBackColor = true;
+            this.buttonSearch.Click += new System.EventHandler(this.buttonSearch_Click);
+            // 
             // listBox1
             // 
             this.listBox1.Dock = System.Windows.Forms.DockStyle.Top;
@@ -156,6 +176,9 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.textBoxGr);
+            this.tabPage2.Controls.Add(this.label12);
+            this.tabPage2.Controls.Add(this.button1);
             this.tabPage2.Controls.Add(this.labelINSERT);
             this.tabPage2.Controls.Add(this.buttonINSERT);
             this.tabPage2.Controls.Add(this.label4);
@@ -174,6 +197,32 @@
             this.tabPage2.Text = "INSERT";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // textBoxGr
+            // 
+            this.textBoxGr.Location = new System.Drawing.Point(320, 35);
+            this.textBoxGr.Name = "textBoxGr";
+            this.textBoxGr.Size = new System.Drawing.Size(100, 20);
+            this.textBoxGr.TabIndex = 12;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(244, 43);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(57, 13);
+            this.label12.TabIndex = 11;
+            this.label12.Text = "Название";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(247, 67);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(173, 23);
+            this.button1.TabIndex = 10;
+            this.button1.Text = "Добавить в \"Группы\"";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // labelINSERT
             // 
             this.labelINSERT.AutoSize = true;
@@ -188,11 +237,11 @@
             // 
             // buttonINSERT
             // 
-            this.buttonINSERT.Location = new System.Drawing.Point(68, 146);
+            this.buttonINSERT.Location = new System.Drawing.Point(12, 146);
             this.buttonINSERT.Name = "buttonINSERT";
-            this.buttonINSERT.Size = new System.Drawing.Size(115, 23);
+            this.buttonINSERT.Size = new System.Drawing.Size(171, 23);
             this.buttonINSERT.TabIndex = 8;
-            this.buttonINSERT.Text = "Добавить";
+            this.buttonINSERT.Text = "Добавить в \"Студенты\"";
             this.buttonINSERT.UseVisualStyleBackColor = true;
             this.buttonINSERT.Click += new System.EventHandler(this.buttonINSERT_Click);
             // 
@@ -417,6 +466,7 @@
             this.button2DELETE.TabIndex = 5;
             this.button2DELETE.Text = "Удалить";
             this.button2DELETE.UseVisualStyleBackColor = true;
+            this.button2DELETE.Click += new System.EventHandler(this.button2DELETE_Click);
             // 
             // button1DELETE
             // 
@@ -460,23 +510,6 @@
             this.label10.TabIndex = 0;
             this.label10.Text = "ID";
             // 
-            // buttonSearch
-            // 
-            this.buttonSearch.Location = new System.Drawing.Point(364, 154);
-            this.buttonSearch.Name = "buttonSearch";
-            this.buttonSearch.Size = new System.Drawing.Size(87, 23);
-            this.buttonSearch.TabIndex = 1;
-            this.buttonSearch.Text = "Поиск";
-            this.buttonSearch.UseVisualStyleBackColor = true;
-            this.buttonSearch.Click += new System.EventHandler(this.buttonSearch_Click);
-            // 
-            // textBoxSearch
-            // 
-            this.textBoxSearch.Location = new System.Drawing.Point(3, 155);
-            this.textBoxSearch.Name = "textBoxSearch";
-            this.textBoxSearch.Size = new System.Drawing.Size(355, 20);
-            this.textBoxSearch.TabIndex = 2;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -486,7 +519,7 @@
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Обработчик";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -548,6 +581,9 @@
         private System.Windows.Forms.Label labelDELETE;
         private System.Windows.Forms.TextBox textBoxSearch;
         private System.Windows.Forms.Button buttonSearch;
+        private System.Windows.Forms.TextBox textBoxGr;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Button button1;
     }
 }
 

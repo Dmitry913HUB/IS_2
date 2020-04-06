@@ -7,7 +7,7 @@ namespace IS_2
 {
     public partial class Form1 : Form
     {
-        SqlConnection sqlConnection;
+        SqlConnection sqlConnection;// объект, с помощью которого мы будем подключаться к базе данных
         public Form1()
         {
             InitializeComponent();
@@ -16,9 +16,9 @@ namespace IS_2
         {
             string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Dima\source\repos\IS_2\IS_2\students1.mdf;Integrated Security=True;Connect Timeout=30";
             
-            sqlConnection = new SqlConnection(connectionString);
+            sqlConnection = new SqlConnection(connectionString);//экземпляр класса, в качестве параметра передаём адрес нахождения нашей БД
 
-            await sqlConnection.OpenAsync();
+            await sqlConnection.OpenAsync();//открываем соединение с базой данных 
 
             //SqlDataReader sqlReader = null;
 
@@ -48,11 +48,47 @@ namespace IS_2
             //}
         }
 
+        private async void buttonSearch_Click(object sender, EventArgs e)
+        {
+            SqlDataReader sqlReader = null;//позволяет получать таблицу в табличном представлении
+
+            //в качестве пораметров передаём команду SQL и адрес соединения
+            SqlCommand command = new SqlCommand("SELECT * FROM [Студенты] WHERE [Группа] = @Группа ", sqlConnection);
+
+            command.Parameters.AddWithValue("Группа", textBoxSearch.Text);
+
+            try
+            {
+                sqlReader = await command.ExecuteReaderAsync();//этот метод считывает таблицу для дальнейшей работы с ней
+
+                listBox1.Items.Clear();
+
+                while (await sqlReader.ReadAsync())//добавляем в listbox1 элементы базы данных
+                {
+                    listBox1.Items.Add(Convert.ToString(sqlReader["Id"])
+                        + "     " + Convert.ToString(sqlReader["Фамилия"])
+                        + "     " + Convert.ToString(sqlReader["Имя"])
+                        + "     " + Convert.ToString(sqlReader["Отчество"])
+                        + "     " + Convert.ToString(sqlReader["Группа"]));
+                }
+            }
+            catch (Exception ex)// ех - исключение
+            {
+                MessageBox.Show(ex.Message.ToString(), ex.Source.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //в случае исключения выдаёт сообщение об исключении и кнопку ОК с иконкой Ошибка
+            }
+            finally//чтобы не произошло в блоке try мы закрываем sqpReader
+            {
+                if (sqlReader != null)
+                    sqlReader.Close();
+            }
+        }
+
         private void выходToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (sqlConnection != null && sqlConnection.State != ConnectionState.Closed)
                 sqlConnection.Close();
-            Application.Exit();
+            Application.Exit();//Это функция выхода из формы из выпадающего меню "Файл"
         }
 
         private async void buttonINSERT_Click(object sender, EventArgs e)
@@ -62,7 +98,7 @@ namespace IS_2
             if (labelINSERT.Visible)
                 labelINSERT.Visible = false;
 
-
+            //проверка содержимиого текст боксов 
             if (!string.IsNullOrEmpty(textBox1INSERT.Text) && !string.IsNullOrWhiteSpace(textBox1INSERT.Text) &&
                 !string.IsNullOrEmpty(textBox2INSERT.Text) && !string.IsNullOrWhiteSpace(textBox2INSERT.Text) &&
                 !string.IsNullOrEmpty(textBox3INSERT.Text) && !string.IsNullOrWhiteSpace(textBox3INSERT.Text) &&
@@ -73,13 +109,35 @@ namespace IS_2
                 command.Parameters.AddWithValue("Отчество", textBox3INSERT.Text);
                 command.Parameters.AddWithValue("Группа", textBox4INSERT.Text);
 
-                await command.ExecuteNonQueryAsync();
+                await command.ExecuteNonQueryAsync();//этот метод считывает таблицу для дальнейшей работы с ней
             }
             else 
             {
                 labelINSERT.Visible = true;
 
                 labelINSERT.Text = "Поля 'Фамилия', 'Имя', 'Отчество', 'Группа' должны быть заполнены!";
+            }
+        }
+
+        private async void button1_Click(object sender, EventArgs e)
+        {
+            SqlCommand command = new SqlCommand("INSERT INTO [Группа] (Название)VALUES(@Название)", sqlConnection);
+
+            if (labelINSERT.Visible)
+                labelINSERT.Visible = false;
+
+
+            if (!string.IsNullOrEmpty(textBoxGr.Text) && !string.IsNullOrWhiteSpace(textBoxGr.Text))
+            {
+                command.Parameters.AddWithValue("Название", textBoxGr.Text);
+
+                await command.ExecuteNonQueryAsync();
+            }
+            else
+            {
+                labelINSERT.Visible = true;
+
+                labelINSERT.Text = "Поле 'Название' должно быть заполнено!";
             }
         }
 
@@ -158,7 +216,7 @@ namespace IS_2
 
 
             if (!string.IsNullOrEmpty(textBox1DELETE.Text) && !string.IsNullOrWhiteSpace(textBox1DELETE.Text))
-            {
+            {//в качестве пораметров передаём команду SQL и адрес соединения
                 SqlCommand command = new SqlCommand("DELETE FROM [Студенты] WHERE [Id]=@Id", sqlConnection);
 
                 command.Parameters.AddWithValue("Id",textBox1DELETE.Text);
@@ -173,38 +231,27 @@ namespace IS_2
             }
         }
 
-        private async void buttonSearch_Click(object sender, EventArgs e)
+        private async void button2DELETE_Click(object sender, EventArgs e)
         {
-            SqlDataReader sqlReader = null;
+            if (labelDELETE.Visible)
+                labelDELETE.Visible = false;
 
-            SqlCommand command = new SqlCommand("SELECT * FROM [Студенты][Группа] WHERE [Студенты][Название] == [Группа][Id] ", sqlConnection);
 
-            command.Parameters.AddWithValue("Название", textBoxSearch.Text);
-
-            try
+            if (!string.IsNullOrEmpty(textBox2DELETE.Text) && !string.IsNullOrWhiteSpace(textBox2DELETE.Text))
             {
-                sqlReader = await command.ExecuteReaderAsync();
+                SqlCommand command = new SqlCommand("DELETE FROM [Группа] WHERE [Название]=@Название", sqlConnection);
 
-                listBox1.Items.Clear();
+                command.Parameters.AddWithValue("Название", textBox2DELETE.Text);
 
-                while (await sqlReader.ReadAsync())
-                {
-                    listBox1.Items.Add(Convert.ToString(sqlReader["Id"])
-                        + "     " + Convert.ToString(sqlReader["Фамилия"])
-                        + "     " + Convert.ToString(sqlReader["Имя"])
-                        + "     " + Convert.ToString(sqlReader["Отчество"])
-                        + "     " + Convert.ToString(sqlReader["Группа"]));
-                }
+                await command.ExecuteNonQueryAsync();
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show(ex.Message.ToString(), ex.Source.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                if (sqlReader != null)
-                    sqlReader.Close();
+                labelDELETE.Visible = true;
+
+                labelDELETE.Text = "Id должен быть заполнен!";
             }
         }
+
     }
 }
